@@ -84,33 +84,30 @@ function gerarEscala() {
 
         card.className = "domingo";
 
-        card.innerHTML = `
+        const ehDomingo = data.getDay() === 0;
 
-        <h3>
+card.innerHTML = `
 
-        ${data.getDay()==0 ? "🌞 Domingo" : "🌙 Quinta"}
+<h3>
+${ehDomingo ? "🌞 Domingo" : "🌙 Quinta"}
+${numero}
+</h3>
 
-        ${numero}
+<label>Evangelista</label>
 
-        </h3>
+<select class="evangelista">
+    <option value="">Selecionar...</option>
+</select>
 
-        <label>Evangelista</label>
+${ehDomingo ? `
+<label>Auxiliar</label>
 
-        <select class="evangelista">
+<select class="auxiliar">
+    <option value="">Selecionar...</option>
+</select>
+` : ""}
 
-            <option value="">Selecionar...</option>
-
-        </select>
-
-        <label>Auxiliar</label>
-
-        <select class="auxiliar">
-
-            <option value="">Selecionar...</option>
-
-        </select>
-
-        `;
+`;
 
         const evangelista = card.querySelector(".evangelista");
 
