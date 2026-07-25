@@ -344,38 +344,92 @@ btnSalvar.addEventListener("click", async () => {
 
 btnExportar.addEventListener("click", async () => {
 
-    const original = btnExportar.innerText;
+    const card = document.createElement("div");
 
-    btnExportar.innerText = "Gerando imagem...";
+    card.id = "cardExportacao";
 
-    try {
+    const titulo = mesesTexto[parseInt(mesAdmin.value.split("-")[1]) - 1];
 
-        const canvas = await html2canvas(escalaDiv, {
+    let html = `
 
-            backgroundColor: "#ffffff",
+    <div class="topo">
 
-            scale: 2
+        <div class="logo">🌈</div>
 
-        });
+        <h1>Escala do Culto Infantil</h1>
 
-        const link = document.createElement("a");
+        <h2>${titulo.toUpperCase()} • ${mesAdmin.value.split("-")[0]}</h2>
 
-        link.download = `Escala_${mesAdmin.value}.png`;
+    </div>
 
-        link.href = canvas.toDataURL("image/png");
+    `;
 
-        link.click();
+    document.querySelectorAll(".domingo").forEach(culto=>{
 
-    }
+        const titulo = culto.querySelector("h3").innerText;
 
-    catch (erro) {
+        const evangelista = culto.querySelector(".evangelista").value || "__________";
 
-        console.error(erro);
+        const auxSelect = culto.querySelector(".auxiliar");
 
-        alert("Erro ao gerar imagem.");
+        html += `
 
-    }
+        <div class="cultoExportacao">
 
-    btnExportar.innerText = original;
+            <h3>${titulo}</h3>
+
+            <p>👩 <strong>Evangelista:</strong> ${evangelista}</p>
+
+        `;
+
+        if(auxSelect){
+
+            html += `
+
+            <p>🤝 <strong>Auxiliar:</strong> ${auxSelect.value || "__________"}</p>
+
+            `;
+
+        }
+
+        html += `
+
+        </div>
+
+        `;
+
+    });
+
+    html += `
+
+    <div class="rodapeExportacao">
+
+        💚 Ministério Infantil
+
+    </div>
+
+    `;
+
+    card.innerHTML = html;
+
+    document.body.appendChild(card);
+
+    const canvas = await html2canvas(card,{
+
+        scale:2,
+
+        backgroundColor:null
+
+    });
+
+    const link = document.createElement("a");
+
+    link.download = `Escala_${mesAdmin.value}.png`;
+
+    link.href = canvas.toDataURL();
+
+    link.click();
+
+    document.body.removeChild(card);
 
 });
