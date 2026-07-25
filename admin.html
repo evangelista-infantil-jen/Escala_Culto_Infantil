@@ -3,17 +3,20 @@
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-    <title>Painel da Administradora</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+<title>Painel da Escala</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="style.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+rel="stylesheet">
 
 </head>
 
@@ -29,115 +32,40 @@
 
 <h1>Painel da Escala</h1>
 
-<p>
-Culto Infantil
-</p>
+<p>Monte a escala do mês</p>
 
 </header>
 
 <section class="card">
 
-<h2>Resumo</h2>
+<label>Mês</label>
 
-<div class="cardsResumo">
+<select id="mesAdmin">
 
-<div class="resumo">
+<option value="2026-01">Janeiro</option>
+<option value="2026-02">Fevereiro</option>
+<option value="2026-03">Março</option>
+<option value="2026-04">Abril</option>
+<option value="2026-05">Maio</option>
+<option value="2026-06">Junho</option>
+<option value="2026-07">Julho</option>
+<option value="2026-08" selected>Agosto</option>
+<option value="2026-09">Setembro</option>
+<option value="2026-10">Outubro</option>
+<option value="2026-11">Novembro</option>
+<option value="2026-12">Dezembro</option>
 
-<h3 id="totalPessoas">0</h3>
-
-<p>Participantes</p>
-
-</div>
-
-<div class="resumo">
-
-<h3 id="totalDias">0</h3>
-
-<p>Disponibilidades</p>
-
-</div>
-
-</div>
+</select>
 
 </section>
 
 <section class="card">
 
-<h2>Disponibilidades</h2>
+<h2>Escala</h2>
 
-<div id="listaParticipantes">
+<div id="escala">
 
-<!-- Preenchido pelo JavaScript -->
-
-</div>
-
-</section>
-
-<section class="card">
-
-<h2>Escala do mês</h2>
-
-<div class="diasEscala">
-
-<div class="domingo">
-
-<h3>Domingo 02</h3>
-
-<select>
-
-<option>Selecionar...</option>
-
-</select>
-
-</div>
-
-<div class="domingo">
-
-<h3>Domingo 09</h3>
-
-<select>
-
-<option>Selecionar...</option>
-
-</select>
-
-</div>
-
-<div class="domingo">
-
-<h3>Domingo 16</h3>
-
-<select>
-
-<option>Selecionar...</option>
-
-</select>
-
-</div>
-
-<div class="domingo">
-
-<h3>Domingo 23</h3>
-
-<select>
-
-<option>Selecionar...</option>
-
-</select>
-
-</div>
-
-<div class="domingo">
-
-<h3>Domingo 30</h3>
-
-<select>
-
-<option>Selecionar...</option>
-
-</select>
-
-</div>
+<!-- JavaScript -->
 
 </div>
 
@@ -149,15 +77,20 @@ Culto Infantil
 
 </section>
 
-<footer>
+<section class="card">
 
-Sistema de Escalas • Culto Infantil
+<button id="baixarImagem">
 
-</footer>
+🖼️ Exportar PNG
+
+</button>
+
+</section>
 
 </div>
 
-<script type="module" src="admin.js"></script>
+<script type="module"
+src="admin.js"></script>
 
 </body>
 
