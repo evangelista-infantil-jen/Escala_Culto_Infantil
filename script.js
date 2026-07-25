@@ -73,7 +73,17 @@ botaoSalvar.addEventListener("click", () => {
 
     };
 
-    console.log(disponibilidade);
+    await addDoc(collection(db,"disponibilidades"),{
+
+    nome:nome,
+
+    mes:campoMes.value,
+
+    dias:diasSelecionados,
+
+    criadoEm:new Date()
+
+    });
 
     /*
         AQUI será conectado ao Firebase.
