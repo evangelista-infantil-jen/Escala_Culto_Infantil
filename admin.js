@@ -14,6 +14,9 @@ const mesAdmin = document.getElementById("mesAdmin");
 const escalaDiv = document.getElementById("escala");
 const btnSalvar = document.getElementById("salvarEscala");
 const btnExportar = document.getElementById("exportarImagem");
+const totalParticipantes = document.getElementById("totalParticipantes");
+const totalCultos = document.getElementById("totalCultos");
+const cultosMontados = document.getElementById("cultosMontados");
 
 let participantes = [];
 
@@ -56,6 +59,8 @@ async function carregarParticipantes() {
 function gerarEscala() {
 
     escalaDiv.innerHTML = "";
+
+    let quantidadeCultos = 0;
 
     const [ano, mes] = mesAdmin.value.split("-");
 
@@ -121,6 +126,8 @@ function gerarEscala() {
         });
 
         escalaDiv.appendChild(card);
+        totalParticipantes.innerText = participantes.length;
+        totalCultos.innerText = quantidadeCultos;
 
     }
 
@@ -163,6 +170,24 @@ async function carregarEscala() {
         auxiliar.value = dados.eventos[dia].auxiliar || "";
 
     });
+
+    let completas = 0;
+
+document.querySelectorAll(".domingo").forEach(card=>{
+
+    const ev =
+    card.querySelector(".evangelista").value;
+
+    const au =
+    card.querySelector(".auxiliar").value;
+
+    if(ev && au)
+        completas++;
+
+});
+
+cultosMontados.innerText =
+`${completas}/${document.querySelectorAll(".domingo").length}`;
 
 }
 
