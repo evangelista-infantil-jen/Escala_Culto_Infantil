@@ -17,6 +17,8 @@ const btnExportar = document.getElementById("exportarImagem");
 const totalParticipantes = document.getElementById("totalParticipantes");
 const totalCultos = document.getElementById("totalCultos");
 const cultosMontados = document.getElementById("cultosMontados");
+const listaDisponibilidades = document.getElementById("listaDisponibilidades");
+const diasSemDisponibilidade = document.getElementById("diasSemDisponibilidade");
 
 let participantes = [];
 
@@ -59,6 +61,8 @@ async function carregarParticipantes() {
 function gerarEscala() {
 
     escalaDiv.innerHTML = "";
+    listaDisponibilidades.innerHTML = "";
+    diasSemDisponibilidade.innerHTML = "";
 
     let quantidadeCultos = 0;
 
@@ -133,6 +137,56 @@ ${ehDomingo ? `
     
     totalParticipantes.innerText = participantes.length;
     totalCultos.innerText = quantidadeCultos;
+    // ===== Lista de participantes =====
+
+participantes
+    .sort((a, b) => a.nome.localeCompare(b.nome))
+    .forEach(pessoa => {
+
+        const div = document.createElement("div");
+
+        div.className = "participante";
+
+        div.innerHTML = `
+            <strong>${pessoa.nome}</strong><br>
+            ${pessoa.dias.join(" • ")}
+        `;
+
+        listaDisponibilidades.appendChild(div);
+
+    });
+    for (let dia = 1; dia <= ultimoDia; dia++) {
+
+    const data = new Date(ano, mes - 1, dia);
+
+    if (data.getDay() !== 0 && data.getDay() !== 4)
+        continue;
+
+    const numero = String(dia).padStart(2, "0");
+
+    const disponiveis = participantes.filter(p =>
+        p.dias.includes(numero)
+    );
+
+    if (disponiveis.length === 0) {
+
+        const p = document.createElement("p");
+
+        p.innerHTML =
+            `⚠ ${data.getDay()==0 ? "Domingo" : "Quinta"} ${numero}`;
+
+        diasSemDisponibilidade.appendChild(p);
+
+    }
+
+}
+
+if (diasSemDisponibilidade.innerHTML === "") {
+
+    diasSemDisponibilidade.innerHTML =
+        "<p>✅ Todos os cultos possuem pelo menos um voluntário disponível.</p>";
+
+}
     carregarEscala();
 
 }
