@@ -115,13 +115,17 @@ ${ehDomingo ? `
 
         disponiveis.forEach(pessoa => {
 
-            evangelista.innerHTML +=
-                `<option value="${pessoa.nome}">${pessoa.nome}</option>`;
+    evangelista.innerHTML +=
+        `<option value="${pessoa.nome}">${pessoa.nome}</option>`;
 
-            auxiliar.innerHTML +=
-                `<option value="${pessoa.nome}">${pessoa.nome}</option>`;
+    if (auxiliar) {
 
-        });
+        auxiliar.innerHTML +=
+            `<option value="${pessoa.nome}">${pessoa.nome}</option>`;
+
+    }
+
+});
 
         escalaDiv.appendChild(card);
 
