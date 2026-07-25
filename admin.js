@@ -72,6 +72,7 @@ function gerarEscala() {
 
         if (data.getDay() !== 0 && data.getDay() !== 4)
             continue;
+        quantidadeCultos++;
 
         const numero = String(dia).padStart(2, "0");
 
@@ -126,11 +127,11 @@ function gerarEscala() {
         });
 
         escalaDiv.appendChild(card);
-        totalParticipantes.innerText = participantes.length;
-        totalCultos.innerText = quantidadeCultos;
 
     }
-
+    
+    totalParticipantes.innerText = participantes.length;
+    totalCultos.innerText = quantidadeCultos;
     carregarEscala();
 
 }
@@ -266,6 +267,7 @@ btnSalvar.addEventListener("click", async () => {
         );
 
         alert("✅ Escala salva com sucesso!");
+        carregarEscala();
 
     }
 
