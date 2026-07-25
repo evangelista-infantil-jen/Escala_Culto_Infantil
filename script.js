@@ -1,19 +1,22 @@
-// Dias selecionados
+import { db } from "./firebase.js";
+
+import {
+    collection,
+    doc,
+    setDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
 const diasSelecionados = [];
 
-// Todos os botões de dias
 const botoesDias = document.querySelectorAll(".dia");
 
-// Botão salvar
 const botaoSalvar = document.getElementById("salvar");
 
-// Campo nome
 const campoNome = document.getElementById("nome");
 
-// Campo mês
 const campoMes = document.getElementById("mes");
 
-// Selecionar dias
 botoesDias.forEach(botao => {
 
     botao.addEventListener("click", () => {
@@ -22,9 +25,10 @@ botoesDias.forEach(botao => {
 
         if (diasSelecionados.includes(dia)) {
 
-            const indice = diasSelecionados.indexOf(dia);
-
-            diasSelecionados.splice(indice, 1);
+            diasSelecionados.splice(
+                diasSelecionados.indexOf(dia),
+                1
+            );
 
             botao.classList.remove("ativo");
 
@@ -40,76 +44,67 @@ botoesDias.forEach(botao => {
 
 });
 
-// Salvar
-botaoSalvar.addEventListener("click", () => {
+botaoSalvar.addEventListener("click", async () => {
 
     const nome = campoNome.value.trim();
 
-    if (nome === "") {
+    if (!nome) {
 
         alert("Digite seu nome.");
 
-        campoNome.focus();
+        return;
+
+    }
+
+    if (diasSelecionados.length == 0) {
+
+        alert("Escolha pelo menos um dia.");
 
         return;
 
     }
 
-    if (diasSelecionados.length === 0) {
+    const idDocumento = `${campoMes.value}_${nome}`
+        .replaceAll(" ", "_")
+        .toLowerCase();
 
-        alert("Selecione pelo menos um domingo.");
+    try {
 
-        return;
+        await setDoc(
+            doc(db, "disponibilidades", idDocumento),
+            {
+
+                nome,
+
+                mes: campoMes.value,
+
+                dias: diasSelecionados.sort(),
+
+                atualizadoEm: serverTimestamp()
+
+            }
+        );
+
+        alert("Disponibilidade salva com sucesso!");
+
+        campoNome.value = "";
+
+        diasSelecionados.length = 0;
+
+        botoesDias.forEach(botao => {
+
+            botao.classList.remove("ativo");
+
+        });
 
     }
 
-    const disponibilidade = {
+    catch (erro) {
 
-        nome: nome,
+        console.error(erro);
 
-        mes: campoMes.value,
+        alert("Erro ao salvar.");
 
-        dias: diasSelecionados.sort()
-
-    };
-
-    await addDoc(collection(db,"disponibilidades"),{
-
-    nome:nome,
-
-    mes:campoMes.value,
-
-    dias:diasSelecionados,
-
-    criadoEm:new Date()
-
-    });
-
-    /*
-        AQUI será conectado ao Firebase.
-
-        Exemplo:
-
-        salvarDisponibilidade(disponibilidade);
-
-    */
-
-    alert(
-`Obrigado, ${nome}!
-
-Sua disponibilidade foi registrada com sucesso.
-
-Que Deus abençoe seu ministério ❤️`
-    );
-
-    campoNome.value = "";
-
-    diasSelecionados.length = 0;
-
-    botoesDias.forEach(botao => {
-
-        botao.classList.remove("ativo");
-
-    });
+    }
 
 });
