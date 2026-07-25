@@ -1,101 +1,211 @@
 import { db } from "./firebase.js";
 
 import {
-    collection,
     doc,
     setDoc,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-const diasSelecionados = [];
-
-const botoesDias = document.querySelectorAll(".dia");
-
-const botaoSalvar = document.getElementById("salvar");
+// =======================
+// ELEMENTOS
+// =======================
 
 const campoNome = document.getElementById("nome");
-
 const campoMes = document.getElementById("mes");
+const botaoSalvar = document.getElementById("salvar");
+const calendario = document.getElementById("calendario");
 
-botoesDias.forEach(botao => {
+// =======================
+// DADOS
+// =======================
 
-    botao.addEventListener("click", () => {
+const diasSelecionados = [];
 
-        const dia = botao.innerText;
+const meses = {
+    "Janeiro": 0,
+    "Fevereiro": 1,
+    "Março": 2,
+    "Abril": 3,
+    "Maio": 4,
+    "Junho": 5,
+    "Julho": 6,
+    "Agosto": 7,
+    "Setembro": 8,
+    "Outubro": 9,
+    "Novembro": 10,
+    "Dezembro": 11
+};
 
-        if (diasSelecionados.includes(dia)) {
+// =======================
+// GERA O CALENDÁRIO
+// =======================
 
-            diasSelecionados.splice(
-                diasSelecionados.indexOf(dia),
-                1
-            );
+function gerarCalendario() {
 
-            botao.classList.remove("ativo");
+    calendario.innerHTML = "";
 
-        } else {
+    const diasSemana = [
+        "Dom",
+        "Seg",
+        "Ter",
+        "Qua",
+        "Qui",
+        "Sex",
+        "Sáb"
+    ];
 
-            diasSelecionados.push(dia);
+    diasSemana.forEach(nome => {
 
-            botao.classList.add("ativo");
+        const titulo = document.createElement("div");
 
-        }
+        titulo.className = "diaSemana";
+
+        titulo.innerText = nome;
+
+        calendario.appendChild(titulo);
 
     });
 
+    const ano = new Date().getFullYear();
+
+    const mes = meses[campoMes.value];
+
+    const primeiroDia = new Date(ano, mes, 1);
+
+    const ultimoDia = new Date(ano, mes + 1, 0).getDate();
+
+    for (let i = 0; i < primeiroDia.getDay(); i++) {
+
+        const vazio = document.createElement("div");
+
+        calendario.appendChild(vazio);
+
+    }
+
+    for (let dia = 1; dia <= ultimoDia; dia++) {
+
+        const data = new Date(ano, mes, dia);
+
+        const card = document.createElement("div");
+
+        card.className = "diaCalendario";
+
+        const numero = String(dia).padStart(2, "0");
+
+        card.innerText = numero;
+
+        // Domingos e Quintas
+        if (data.getDay() === 0 || data.getDay() === 4) {
+
+            card.classList.add("selecionavel");
+
+            card.addEventListener("click", () => {
+
+                if (diasSelecionados.includes(numero)) {
+
+                    diasSelecionados.splice(
+                        diasSelecionados.indexOf(numero),
+                        1
+                    );
+
+                    card.classList.remove("selecionado");
+
+                } else {
+
+                    diasSelecionados.push(numero);
+
+                    card.classList.add("selecionado");
+
+                }
+
+            });
+
+        } else {
+
+            card.classList.add("desabilitado");
+
+        }
+
+        calendario.appendChild(card);
+
+    }
+
+}
+
+// =======================
+// ALTERAR MÊS
+// =======================
+
+campoMes.addEventListener("change", () => {
+
+    diasSelecionados.length = 0;
+
+    gerarCalendario();
+
 });
+
+// =======================
+// SALVAR NO FIREBASE
+// =======================
 
 botaoSalvar.addEventListener("click", async () => {
 
     const nome = campoNome.value.trim();
 
-    if (!nome) {
+    if (nome === "") {
 
         alert("Digite seu nome.");
 
-        return;
-
-    }
-
-    if (diasSelecionados.length == 0) {
-
-        alert("Escolha pelo menos um dia.");
+        campoNome.focus();
 
         return;
 
     }
 
-    const idDocumento = `${campoMes.value}_${nome}`
-        .replaceAll(" ", "_")
-        .toLowerCase();
+    if (diasSelecionados.length === 0) {
+
+        alert("Selecione pelo menos um dia disponível.");
+
+        return;
+
+    }
 
     try {
 
+        const ano = new Date().getFullYear();
+
+        const numeroMes = String(meses[campoMes.value] + 1).padStart(2, "0");
+
+        const idDocumento =
+            `${ano}-${numeroMes}_${nome}`
+                .replace(/\s+/g, "_")
+                .toLowerCase();
+
         await setDoc(
+
             doc(db, "disponibilidades", idDocumento),
+
             {
 
-                nome,
+                nome: nome,
 
-                mes: campoMes.value,
+                mes: `${ano}-${numeroMes}`,
 
                 dias: diasSelecionados.sort(),
 
                 atualizadoEm: serverTimestamp()
 
             }
+
         );
 
-        alert("Disponibilidade salva com sucesso!");
+        alert("✅ Disponibilidade salva com sucesso!");
 
         campoNome.value = "";
 
         diasSelecionados.length = 0;
 
-        botoesDias.forEach(botao => {
-
-            botao.classList.remove("ativo");
-
-        });
+        gerarCalendario();
 
     }
 
@@ -103,8 +213,14 @@ botaoSalvar.addEventListener("click", async () => {
 
         console.error(erro);
 
-        alert("Erro ao salvar.");
+        alert("Erro ao salvar no Firebase.");
 
     }
 
 });
+
+// =======================
+// INICIAR
+// =======================
+
+gerarCalendario();
