@@ -1,93 +1,297 @@
 import { db } from "./firebase.js";
 
 import {
+    collection,
+    query,
+    where,
+    getDocs,
+    doc,
+    getDoc,
+    setDoc
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-collection,
+const mesAdmin = document.getElementById("mesAdmin");
+const escalaDiv = document.getElementById("escala");
+const btnSalvar = document.getElementById("salvarEscala");
+const btnExportar = document.getElementById("exportarImagem");
 
-onSnapshot
+let participantes = [];
 
-}
+const mesesTexto = [
+    "Janeiro",
+    "Fevereiro",
+    "Março",
+    "Abril",
+    "Maio",
+    "Junho",
+    "Julho",
+    "Agosto",
+    "Setembro",
+    "Outubro",
+    "Novembro",
+    "Dezembro"
+];
 
-from
+async function carregarParticipantes() {
 
-"https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+    participantes = [];
 
-const lista = document.getElementById("listaParticipantes");
+    const q = query(
+        collection(db, "disponibilidades"),
+        where("mes", "==", mesAdmin.value)
+    );
 
-const totalPessoas = document.getElementById("totalPessoas");
+    const snapshot = await getDocs(q);
 
-const totalDias = document.getElementById("totalDias");
-
-const selects = document.querySelectorAll(".domingo select");
-
-onSnapshot(
-
-collection(db,"disponibilidades"),
-
-(snapshot)=>{
-
-    lista.innerHTML="";
-
-    let participantes=[];
-
-    let qtdDias=0;
-
-    snapshot.forEach(doc=>{
+    snapshot.forEach(doc => {
 
         participantes.push(doc.data());
 
     });
 
-    totalPessoas.innerText=participantes.length;
+    gerarEscala();
 
-    participantes.forEach(pessoa=>{
+}
 
-        const dias=pessoa.dias || [];
+function gerarEscala() {
 
-        qtdDias += dias.length;
+    escalaDiv.innerHTML = "";
 
-        const div=document.createElement("div");
+    const [ano, mes] = mesAdmin.value.split("-");
 
-        div.className="participante";
+    const ultimoDia = new Date(ano, mes, 0).getDate();
 
-        div.innerHTML=`
+    for (let dia = 1; dia <= ultimoDia; dia++) {
 
-        <h3>👤 ${pessoa.nome}</h3>
+        const data = new Date(ano, mes - 1, dia);
 
-        ${dias.map(d=>`<span class="tag">${d}</span>`).join("")}
+        if (data.getDay() !== 0 && data.getDay() !== 4)
+            continue;
+
+        const numero = String(dia).padStart(2, "0");
+
+        const disponiveis = participantes.filter(p =>
+            p.dias.includes(numero)
+        );
+
+        const card = document.createElement("div");
+
+        card.className = "domingo";
+
+        card.innerHTML = `
+
+        <h3>
+
+        ${data.getDay()==0 ? "🌞 Domingo" : "🌙 Quinta"}
+
+        ${numero}
+
+        </h3>
+
+        <label>Evangelista</label>
+
+        <select class="evangelista">
+
+            <option value="">Selecionar...</option>
+
+        </select>
+
+        <label>Auxiliar</label>
+
+        <select class="auxiliar">
+
+            <option value="">Selecionar...</option>
+
+        </select>
 
         `;
 
-        lista.appendChild(div);
+        const evangelista = card.querySelector(".evangelista");
 
-    });
+        const auxiliar = card.querySelector(".auxiliar");
 
-    totalDias.innerText=qtdDias;
+        disponiveis.forEach(pessoa => {
 
-    preencherSelects(participantes);
+            evangelista.innerHTML +=
+                `<option value="${pessoa.nome}">${pessoa.nome}</option>`;
 
-}
-
-);
-
-function preencherSelects(participantes){
-
-    selects.forEach(select=>{
-
-        select.innerHTML="<option>Selecionar...</option>";
-
-        participantes.forEach(p=>{
-
-            const option=document.createElement("option");
-
-            option.value=p.nome;
-
-            option.innerText=p.nome;
-
-            select.appendChild(option);
+            auxiliar.innerHTML +=
+                `<option value="${pessoa.nome}">${pessoa.nome}</option>`;
 
         });
 
+        escalaDiv.appendChild(card);
+
+    }
+
+    carregarEscala();
+
+}
+
+mesAdmin.addEventListener("change", carregarParticipantes);
+
+carregarParticipantes();
+
+// ========================================
+// CARREGAR ESCALA JÁ SALVA
+// ========================================
+
+async function carregarEscala() {
+
+    const documento = await getDoc(
+        doc(db, "escalas", mesAdmin.value)
+    );
+
+    if (!documento.exists()) return;
+
+    const dados = documento.data();
+
+    if (!dados.eventos) return;
+
+    document.querySelectorAll(".domingo").forEach(card => {
+
+        const titulo = card.querySelector("h3").innerText;
+
+        const dia = titulo.match(/\d+/)[0];
+
+        if (!dados.eventos[dia]) return;
+
+        const evangelista = card.querySelector(".evangelista");
+        const auxiliar = card.querySelector(".auxiliar");
+
+        evangelista.value = dados.eventos[dia].evangelista || "";
+        auxiliar.value = dados.eventos[dia].auxiliar || "";
+
     });
 
 }
+
+// ========================================
+// IMPEDIR PESSOA REPETIDA
+// ========================================
+
+document.addEventListener("change", (e) => {
+
+    if (
+        !e.target.classList.contains("evangelista") &&
+        !e.target.classList.contains("auxiliar")
+    ) return;
+
+    const card = e.target.closest(".domingo");
+
+    const evangelista = card.querySelector(".evangelista");
+    const auxiliar = card.querySelector(".auxiliar");
+
+    if (
+        evangelista.value &&
+        evangelista.value === auxiliar.value
+    ) {
+
+        alert("A mesma pessoa não pode ser Evangelista e Auxiliar no mesmo culto.");
+
+        e.target.value = "";
+
+    }
+
+});
+
+// ========================================
+// SALVAR ESCALA
+// ========================================
+
+btnSalvar.addEventListener("click", async () => {
+
+    const eventos = {};
+
+    document.querySelectorAll(".domingo").forEach(card => {
+
+        const titulo = card.querySelector("h3").innerText;
+
+        const dia = titulo.match(/\d+/)[0];
+
+        const evangelista = card.querySelector(".evangelista").value;
+
+        const auxiliar = card.querySelector(".auxiliar").value;
+
+        eventos[dia] = {
+
+            evangelista,
+            auxiliar
+
+        };
+
+    });
+
+    try {
+
+        await setDoc(
+
+            doc(db, "escalas", mesAdmin.value),
+
+            {
+
+                mes: mesAdmin.value,
+
+                eventos: eventos,
+
+                atualizadoEm: new Date()
+
+            }
+
+        );
+
+        alert("✅ Escala salva com sucesso!");
+
+    }
+
+    catch (erro) {
+
+        console.error(erro);
+
+        alert("Erro ao salvar a escala.");
+
+    }
+
+});
+
+// ========================================
+// EXPORTAR COMO IMAGEM
+// ========================================
+
+btnExportar.addEventListener("click", async () => {
+
+    const original = btnExportar.innerText;
+
+    btnExportar.innerText = "Gerando imagem...";
+
+    try {
+
+        const canvas = await html2canvas(escalaDiv, {
+
+            backgroundColor: "#ffffff",
+
+            scale: 2
+
+        });
+
+        const link = document.createElement("a");
+
+        link.download = `Escala_${mesAdmin.value}.png`;
+
+        link.href = canvas.toDataURL("image/png");
+
+        link.click();
+
+    }
+
+    catch (erro) {
+
+        console.error(erro);
+
+        alert("Erro ao gerar imagem.");
+
+    }
+
+    btnExportar.innerText = original;
+
+});
