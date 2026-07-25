@@ -4,9 +4,13 @@ import {
 
 collection,
 
-getDocs
+onSnapshot
 
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+}
+
+from
+
+"https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 const lista = document.getElementById("listaParticipantes");
 
@@ -16,55 +20,55 @@ const totalDias = document.getElementById("totalDias");
 
 const selects = document.querySelectorAll(".domingo select");
 
-async function carregarParticipantes(){
+onSnapshot(
+
+collection(db,"disponibilidades"),
+
+(snapshot)=>{
 
     lista.innerHTML="";
 
-    let quantidadePessoas=0;
+    let participantes=[];
 
-    let quantidadeDias=0;
+    let qtdDias=0;
 
-    const querySnapshot = await getDocs(collection(db,"disponibilidades"));
-
-    const participantes=[];
-
-    querySnapshot.forEach((doc)=>{
+    snapshot.forEach(doc=>{
 
         participantes.push(doc.data());
 
     });
 
-    quantidadePessoas = participantes.length;
+    totalPessoas.innerText=participantes.length;
 
-    participantes.forEach(participante=>{
+    participantes.forEach(pessoa=>{
 
-        quantidadeDias += participante.dias.length;
+        const dias=pessoa.dias || [];
+
+        qtdDias += dias.length;
 
         const div=document.createElement("div");
 
         div.className="participante";
 
-        let html=`<h3>👤 ${participante.nome}</h3>`;
+        div.innerHTML=`
 
-        participante.dias.forEach(dia=>{
+        <h3>👤 ${pessoa.nome}</h3>
 
-            html += `<span class="tag">${dia}</span>`;
+        ${dias.map(d=>`<span class="tag">${d}</span>`).join("")}
 
-        });
-
-        div.innerHTML=html;
+        `;
 
         lista.appendChild(div);
 
     });
 
-    totalPessoas.innerText=quantidadePessoas;
-
-    totalDias.innerText=quantidadeDias;
+    totalDias.innerText=qtdDias;
 
     preencherSelects(participantes);
 
 }
+
+);
 
 function preencherSelects(participantes){
 
@@ -72,13 +76,13 @@ function preencherSelects(participantes){
 
         select.innerHTML="<option>Selecionar...</option>";
 
-        participantes.forEach(pessoa=>{
+        participantes.forEach(p=>{
 
             const option=document.createElement("option");
 
-            option.value=pessoa.nome;
+            option.value=p.nome;
 
-            option.innerText=pessoa.nome;
+            option.innerText=p.nome;
 
             select.appendChild(option);
 
@@ -87,11 +91,3 @@ function preencherSelects(participantes){
     });
 
 }
-
-document.getElementById("salvarEscala").addEventListener("click",()=>{
-
-    alert("Em breve iremos salvar a escala.");
-
-});
-
-carregarParticipantes();
