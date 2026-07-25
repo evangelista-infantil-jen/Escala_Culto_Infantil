@@ -283,3 +283,97 @@ footer{
     }
 
 }
+#cardExportacao{
+
+    width:1920px;
+    min-height:1080px;
+
+    background:linear-gradient(180deg,#F8FBFF,#EEF9F1);
+
+    padding:80px;
+
+    font-family:'Poppins',sans-serif;
+
+    position:absolute;
+
+    left:-99999px;
+
+}
+
+#cardExportacao .topo{
+
+    text-align:center;
+
+    margin-bottom:60px;
+
+}
+
+#cardExportacao .logo{
+
+    font-size:80px;
+
+}
+
+#cardExportacao h1{
+
+    color:#4CAF50;
+
+    font-size:60px;
+
+    margin-top:15px;
+
+}
+
+#cardExportacao h2{
+
+    color:#666;
+
+    font-size:36px;
+
+    margin-top:10px;
+
+}
+
+.cultoExportacao{
+
+    background:white;
+
+    border-radius:25px;
+
+    padding:35px;
+
+    margin-bottom:30px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+.cultoExportacao h3{
+
+    color:#4CAF50;
+
+    font-size:34px;
+
+    margin-bottom:20px;
+
+}
+
+.cultoExportacao p{
+
+    font-size:30px;
+
+    margin:12px 0;
+
+}
+
+.rodapeExportacao{
+
+    margin-top:60px;
+
+    text-align:center;
+
+    font-size:28px;
+
+    color:#777;
+
+}
