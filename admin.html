@@ -3,94 +3,87 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Painel da Escala</title>
+    <title>Painel da Escala Infantil</title>
 
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
-<link rel="preconnect"
-href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-<header>
+        <header>
 
-<div class="logo">
-👩🏻‍💼
-</div>
+            <div class="logo">👩🏻‍💼</div>
 
-<h1>Painel da Escala</h1>
+            <h1>Painel da Escala</h1>
 
-<p>Monte a escala do mês</p>
+            <p>Monte a escala do Culto Infantil</p>
 
-</header>
+        </header>
 
-<section class="card">
+        <section class="card">
 
-<label>Mês</label>
+            <label>Mês</label>
 
-<select id="mesAdmin">
+            <select id="mesAdmin">
 
-<option value="2026-01">Janeiro</option>
-<option value="2026-02">Fevereiro</option>
-<option value="2026-03">Março</option>
-<option value="2026-04">Abril</option>
-<option value="2026-05">Maio</option>
-<option value="2026-06">Junho</option>
-<option value="2026-07">Julho</option>
-<option value="2026-08" selected>Agosto</option>
-<option value="2026-09">Setembro</option>
-<option value="2026-10">Outubro</option>
-<option value="2026-11">Novembro</option>
-<option value="2026-12">Dezembro</option>
+                <option value="2026-01">Janeiro</option>
+                <option value="2026-02">Fevereiro</option>
+                <option value="2026-03">Março</option>
+                <option value="2026-04">Abril</option>
+                <option value="2026-05">Maio</option>
+                <option value="2026-06">Junho</option>
+                <option value="2026-07">Julho</option>
+                <option value="2026-08" selected>Agosto</option>
+                <option value="2026-09">Setembro</option>
+                <option value="2026-10">Outubro</option>
+                <option value="2026-11">Novembro</option>
+                <option value="2026-12">Dezembro</option>
 
-</select>
+            </select>
 
-</section>
+        </section>
 
-<section class="card">
+        <section class="card">
 
-<h2>Escala</h2>
+            <h2>Escala do Mês</h2>
 
-<div id="escala">
+            <div id="escala"></div>
 
-<!-- JavaScript -->
+        </section>
 
-</div>
+        <section class="card">
 
-<button id="salvarEscala">
+            <button id="salvarEscala">
 
-💾 Salvar Escala
+                💾 Salvar Escala
 
-</button>
+            </button>
 
-</section>
+            <button id="exportarImagem" style="margin-top:15px;">
 
-<section class="card">
+                🖼 Exportar como Imagem
 
-<button id="baixarImagem">
+            </button>
 
-🖼️ Exportar PNG
+        </section>
 
-</button>
+    </div>
 
-</section>
-
-</div>
-
-<script type="module"
-src="admin.js"></script>
+    <script type="module" src="admin.js"></script>
 
 </body>
 
