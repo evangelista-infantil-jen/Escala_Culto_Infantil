@@ -208,6 +208,7 @@ document.addEventListener("change", (e) => {
 
     const evangelista = card.querySelector(".evangelista");
     const auxiliar = card.querySelector(".auxiliar");
+    if (!auxiliar) return;
 
     if (
         evangelista.value &&
@@ -238,7 +239,8 @@ btnSalvar.addEventListener("click", async () => {
 
         const evangelista = card.querySelector(".evangelista").value;
 
-        const auxiliar = card.querySelector(".auxiliar").value;
+        const auxiliarSelect = card.querySelector(".auxiliar");
+        const auxiliar = auxiliarSelect ? auxiliarSelect.value : "";
 
         eventos[dia] = {
 
