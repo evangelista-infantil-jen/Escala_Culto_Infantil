@@ -247,3 +247,75 @@ margin-top:10px;
 margin-top:30px;
 
 }
+
+#calendario{
+
+    margin-top:25px;
+
+    display:grid;
+
+    grid-template-columns:repeat(7,1fr);
+
+    gap:10px;
+
+}
+
+.diaSemana{
+
+    text-align:center;
+
+    font-weight:600;
+
+    color:#777;
+
+    padding:8px;
+
+}
+
+.diaCalendario{
+
+    height:70px;
+
+    border-radius:15px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-weight:bold;
+
+    background:#f3f3f3;
+
+}
+
+.desabilitado{
+
+    opacity:.35;
+
+}
+
+.selecionavel{
+
+    cursor:pointer;
+
+    background:#FFF9C4;
+
+    transition:.25s;
+
+}
+
+.selecionavel:hover{
+
+    transform:scale(1.05);
+
+}
+
+.selecionado{
+
+    background:#81C784;
+
+    color:white;
+
+}
