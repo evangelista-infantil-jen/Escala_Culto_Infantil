@@ -257,3 +257,29 @@ footer{
     }
 
 }
+.cardsResumo{
+    display:flex;
+    gap:15px;
+    margin-top:20px;
+}
+
+.resumo{
+    flex:1;
+    background:#f8f8f8;
+    border-radius:15px;
+    padding:20px;
+    text-align:center;
+}
+
+.resumo h3{
+    color:#4CAF50;
+    font-size:34px;
+}
+
+@media(max-width:700px){
+
+    .cardsResumo{
+        flex-direction:column;
+    }
+
+}
