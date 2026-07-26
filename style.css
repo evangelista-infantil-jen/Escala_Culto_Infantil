@@ -163,6 +163,25 @@ footer{
 .domingo select{
     margin-top:10px;
 }
+#gerarSugestao{
+    width:100%;
+    margin-top:30px;
+    padding:18px;
+    border:none;
+    border-radius:16px;
+    background:linear-gradient(135deg,#c2fcfc,#e1c2fc);
+    color:#000;
+    font-size:18px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+#gerarSugestao:hover{
+    background:linear-gradient(135deg,#85c9c9,#ad86cf);
+    transform:scale(1.02);
+    color: #fff;
+}
 
 /* ===========================
    CALENDÁRIO
