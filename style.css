@@ -7,7 +7,6 @@
 body{
     font-family:'Poppins',sans-serif;
     background:linear-gradient(180deg,#f8fbff,#eef8f3);
-    color:#000000;
 }
 
 .container{
@@ -84,7 +83,7 @@ h2{
     border:none;
     border-radius:16px;
     background:linear-gradient(135deg,#c2fcfc,#e1c2fc);
-    color:#fff;
+    color:#000;
     font-size:18px;
     font-weight:600;
     cursor:pointer;
@@ -95,6 +94,7 @@ h2{
 #salvarEscala:hover{
     background:linear-gradient(135deg,#85c9c9,#ad86cf);
     transform:scale(1.02);
+    color: #fff;
 }
 
 footer{
