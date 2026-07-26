@@ -163,7 +163,8 @@ footer{
 .domingo select{
     margin-top:10px;
 }
-#gerarSugestao{
+#gerarSugestao,
+#exportarImagem{
     width:100%;
     margin-top:30px;
     padding:18px;
@@ -177,7 +178,8 @@ footer{
     transition:.3s;
 }
 
-#gerarSugestao:hover{
+#gerarSugestao:hover,
+#exportarImagem:hover{
     background:linear-gradient(135deg,#85c9c9,#ad86cf);
     transform:scale(1.02);
     color: #fff;
