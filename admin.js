@@ -206,48 +206,94 @@ async function carregarEscala() {
         doc(db, "escalas", mesAdmin.value)
     );
 
-    if (!documento.exists()) return;
-
-    const dados = documento.data();
-
-    if (!dados.eventos) return;
-
+    // Limpa os selects antes de carregar
     document.querySelectorAll(".domingo").forEach(card => {
 
-        const titulo = card.querySelector("h3").innerText;
+        card.querySelector(".evangelista").value = "";
 
-        const dia = titulo.match(/\d+/)[0];
+        const aux = card.querySelector(".auxiliar");
 
-        if (!dados.eventos[dia]) return;
-
-        const evangelista = card.querySelector(".evangelista");
-        const auxiliar = card.querySelector(".auxiliar");
-
-        evangelista.value = dados.eventos[dia].evangelista || "";
-        auxiliar.value = dados.eventos[dia].auxiliar || "";
+        if (aux) aux.value = "";
 
     });
 
-    let completas = 0;
+    // Se não existir escala salva
+    if (!documento.exists()) {
 
-document.querySelectorAll(".domingo").forEach(card=>{
+        atualizarResumoEscalas();
 
-    const ev =
-    card.querySelector(".evangelista").value;
+        return;
 
-    const au =
-    card.querySelector(".auxiliar").value;
+    }
 
-    if(ev && au)
-        completas++;
+    const dados = documento.data();
 
-});
+    if (dados.eventos) {
 
-cultosMontados.innerText =
-`${completas}/${document.querySelectorAll(".domingo").length}`;
+        document.querySelectorAll(".domingo").forEach(card => {
+
+            const titulo = card.querySelector("h3").innerText;
+
+            const dia = titulo.match(/\d+/)[0];
+
+            if (!dados.eventos[dia]) return;
+
+            const evangelista = card.querySelector(".evangelista");
+            const auxiliar = card.querySelector(".auxiliar");
+
+            evangelista.value = dados.eventos[dia].evangelista || "";
+
+            if (auxiliar) {
+
+                auxiliar.value = dados.eventos[dia].auxiliar || "";
+
+            }
+
+        });
+
+    }
+
+    atualizarResumoEscalas();
 
 }
 
+// ========================================
+// ATUALIZA O CARD "ESCALAS PRONTAS"
+// ========================================
+
+function atualizarResumoEscalas() {
+
+    let completas = 0;
+
+    const cultos = document.querySelectorAll(".domingo");
+
+    cultos.forEach(card => {
+
+        const evangelista = card.querySelector(".evangelista").value;
+
+        const auxiliar = card.querySelector(".auxiliar");
+
+        // Quinta-feira (não possui auxiliar)
+        if (!auxiliar) {
+
+            if (evangelista) completas++;
+
+            return;
+
+        }
+
+        // Domingo (precisa dos dois)
+        if (evangelista && auxiliar.value) {
+
+            completas++;
+
+        }
+
+    });
+
+    cultosMontados.innerText = `${completas}/${cultos.length}`;
+
+}
 // ========================================
 // IMPEDIR PESSOA REPETIDA
 // ========================================
@@ -276,6 +322,7 @@ document.addEventListener("change", (e) => {
 
     }
 
+    atualizarResumoEscalas();
 });
 
 // ========================================
@@ -325,6 +372,7 @@ btnSalvar.addEventListener("click", async () => {
         );
 
         alert("✅ Escala salva com sucesso!");
+        atualizarResumoEscalas();
         carregarEscala();
 
     }
