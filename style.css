@@ -73,7 +73,7 @@ select:focus{
 h2{
     margin:30px 0 18px;
     text-align:center;
-    color:linear-gradient(135deg,#ff8769,#fcfbc2);
+    color: linear-gradient(135deg,#ff8769,#fcfbc2);
 }
 
 #salvar,
@@ -93,7 +93,7 @@ h2{
 
 #salvar:hover,
 #salvarEscala:hover{
-    background:#43A047;
+    background:linear-gradient(135deg,#85c9c9,#ad86cf);
     transform:scale(1.02);
 }
 
