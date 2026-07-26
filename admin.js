@@ -19,6 +19,7 @@ const totalCultos = document.getElementById("totalCultos");
 const cultosMontados = document.getElementById("cultosMontados");
 const listaDisponibilidades = document.getElementById("listaDisponibilidades");
 const diasSemDisponibilidade = document.getElementById("diasSemDisponibilidade");
+const btnSugestao = document.getElementById("gerarSugestao");
 
 let participantes = [];
 
@@ -337,6 +338,79 @@ btnSalvar.addEventListener("click", async () => {
     }
 
 });
+
+// ========================================
+// GERAR SUGESTÃO AUTOMÁTICA
+// ========================================
+
+btnSugestao.addEventListener("click", gerarSugestao);
+
+function gerarSugestao() {
+
+    const contador = {};
+
+    participantes.forEach(p => {
+        contador[p.nome] = 0;
+    });
+
+    document.querySelectorAll(".domingo").forEach(card => {
+
+        const titulo = card.querySelector("h3").innerText;
+        const dia = titulo.match(/\d+/)[0];
+
+        // Pessoas disponíveis nesse dia
+        let disponiveis = participantes.filter(p => p.dias.includes(dia));
+
+        // Ordena:
+        // 1º quem tem menos dias disponíveis no mês
+        // 2º quem foi menos escalado até agora
+        disponiveis.sort((a, b) => {
+
+            if (a.dias.length !== b.dias.length)
+                return a.dias.length - b.dias.length;
+
+            return contador[a.nome] - contador[b.nome];
+
+        });
+
+        const evangelista = card.querySelector(".evangelista");
+        const auxiliar = card.querySelector(".auxiliar");
+
+        // Evangelista
+        if (disponiveis.length > 0) {
+
+            evangelista.value = disponiveis[0].nome;
+
+            contador[disponiveis[0].nome]++;
+
+        }
+
+        // Auxiliar (apenas domingos)
+        if (auxiliar) {
+
+            const restante = disponiveis.filter(p =>
+                p.nome !== evangelista.value
+            );
+
+            if (restante.length > 0) {
+
+                restante.sort((a, b) =>
+                    contador[a.nome] - contador[b.nome]
+                );
+
+                auxiliar.value = restante[0].nome;
+
+                contador[restante[0].nome]++;
+
+            }
+
+        }
+
+    });
+
+    alert("✨ Sugestão gerada!\nRevise antes de salvar.");
+
+}
 
 // ========================================
 // EXPORTAR COMO IMAGEM
