@@ -198,8 +198,12 @@ botaoSalvar.addEventListener("click", async () => {
     const nome = campoNome.value.trim();
 
     if (nome === "") {
-
-        alert("Digite seu nome.");
+        Swal.fire({
+            icon: "warning",
+            title: "Campo obrigatório",
+            text: "Selecione seu nome.",
+            confirmButtonColor: "#dbaefc"
+        });
 
         campoNome.focus();
 
@@ -208,8 +212,12 @@ botaoSalvar.addEventListener("click", async () => {
     }
 
     if (diasSelecionados.length === 0) {
-
-        alert("Selecione pelo menos um dia disponível.");
+        Swal.fire({
+            icon: "warning",
+            title: "Nenhum dia selecionado",
+            text: "Selecione pelo menos um dia disponível.",
+            confirmButtonColor: "#dbaefc"
+        });
 
         return;
 
@@ -244,8 +252,16 @@ botaoSalvar.addEventListener("click", async () => {
 
         );
 
-        alert("✅ Disponibilidade salva com sucesso!");
-
+       Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "success",
+            title: "Escala salva com sucesso!",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+        });
+        
         campoNome.value = "";
 
         diasSelecionados.length = 0;
@@ -258,7 +274,12 @@ botaoSalvar.addEventListener("click", async () => {
 
         console.error(erro);
 
-        alert("Erro ao salvar no Firebase.");
+        Swal.fire({
+            icon: "warning",
+            title: "Erro ao salvar",
+            text: "Tente Novamente mais tarde, ou contate a Tia Jen S2",
+            confirmButtonColor: "#dbaefc"
+        });
 
     }
 
