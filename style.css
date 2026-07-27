@@ -360,7 +360,7 @@ footer{
     border-radius:25px;
     font-size:28px;
     color:#555;
-    box-shadow:0 8px 20px rgba(250,241,202);
+    box-shadow:0 10px 10px rgba(242, 208, 53);
 }
 
 .faixaMes{
@@ -371,7 +371,7 @@ footer{
 
     border-radius:40px;
 
-    background:linear-gradient(135deg,#c2fcfc,#e1c2fc);
+    background:linear-gradient(135deg,#c2fcfc,#ff99d1);
 
     color:#5f3aa5;
 
