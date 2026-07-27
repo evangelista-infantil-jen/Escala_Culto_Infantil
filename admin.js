@@ -430,7 +430,12 @@ document.addEventListener("change", (e) => {
         evangelista.value === auxiliar.value
     ) {
 
-        alert("A mesma pessoa não pode ser Evangelista e Auxiliar no mesmo culto.");
+        Swal.fire({
+            icon: "warning",
+            title: "Escala inválida",
+            text: "A mesma pessoa não pode ocupar os dois cargos no mesmo culto.",
+            confirmButtonColor: "#dbaefc"
+        });
 
         e.target.value = "";
 
@@ -485,7 +490,15 @@ btnSalvar.addEventListener("click", async () => {
 
         );
 
-        alert("✅ Escala salva com sucesso!");
+        Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "success",
+            title: "Escala salva com sucesso!",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+        });
         atualizarResumoEscalas();
         carregarEscala();
 
@@ -654,7 +667,15 @@ function gerarSugestao() {
 
     atualizarResumoEscalas();
 
-    alert("✨ Sugestão gerada!\nRevise antes de salvar.");
+    Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "Escala salva com sucesso!",
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true
+    });
 
 }
 
