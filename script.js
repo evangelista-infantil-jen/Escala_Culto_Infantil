@@ -1,9 +1,10 @@
 import { db } from "./firebase.js";
-
 import {
     doc,
     setDoc,
-    serverTimestamp
+    serverTimestamp,
+    collection,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 // =======================
@@ -35,6 +36,50 @@ const meses = {
     "Novembro": 10,
     "Dezembro": 11
 };
+
+// =======================
+// CARREGAR VOLUNTÁRIOS
+// =======================
+
+async function carregarVoluntarios() {
+
+    campoNome.innerHTML = `
+        <option value="">
+            Selecione seu nome...
+        </option>
+    `;
+
+    const snapshot = await getDocs(
+        collection(db, "voluntarios")
+    );
+
+    const voluntarios = [];
+
+    snapshot.forEach(doc => {
+
+        const pessoa = doc.data();
+
+        if (pessoa.ativo === false) return;
+
+        voluntarios.push(pessoa);
+
+    });
+
+    voluntarios.sort((a, b) =>
+        a.nome.localeCompare(b.nome)
+    );
+
+    voluntarios.forEach(pessoa => {
+
+        campoNome.innerHTML += `
+            <option value="${pessoa.nome}">
+                ${pessoa.nome}
+            </option>
+        `;
+
+    });
+
+}
 
 // =======================
 // GERA O CALENDÁRIO
@@ -224,3 +269,4 @@ botaoSalvar.addEventListener("click", async () => {
 // =======================
 
 gerarCalendario();
+carregarVoluntarios();
