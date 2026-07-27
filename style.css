@@ -376,11 +376,23 @@ footer{
 
 .gradeEscala{
 
-    display:grid;
+    display:flex;
 
-    grid-template-columns:repeat(4,1fr);
+    flex-direction:column;
 
     gap:28px;
+
+    margin-top:35px;
+
+}
+
+.linhaExportacao{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:22px;
 
 }
 
@@ -388,23 +400,36 @@ footer{
 
     background:white;
 
-    border-radius:28px;
+    border-radius:25px;
 
     overflow:hidden;
 
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    border:3px solid #FFE0EC;
 
-    border:3px solid #ffe0ec;
+    box-shadow:0 8px 18px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+.cardGrande{
+
+    width:410px;
+
+}
+
+.cardPequeno{
+
+    width:305px;
 
 }
 
 .tituloCulto{
 
-    padding:16px;
+    padding:14px;
 
     text-align:center;
 
-    font-size:28px;
+    font-size:26px;
 
     font-weight:700;
 
@@ -426,15 +451,15 @@ footer{
 
 .conteudoCulto{
 
-    padding:28px;
+    padding:20px 24px;
 
 }
 
 .linhaPessoa{
 
-    font-size:32px;
+    font-size:26px;
 
-    margin:16px 0;
+    margin:12px 0;
 
     color:#444;
 
