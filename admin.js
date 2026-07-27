@@ -717,25 +717,23 @@ btnExportar.addEventListener("click", async () => {
 <div class="cabecalhoEscala">
 
     <div class="logoArea">
-        <img src="IEQLogo.png" class="logoExportacao">
+        <img src="IEQLogo.png" class="logoExportacao" style="width: 35%; height: 35%;" alt="Logo">
     </div>
 
     <div class="tituloArea">
-
-        <h1>🌈 Escala do Culto Infantil</h1>
-
+        <h1>Escala do Culto Infantil</h1>
         <div class="faixaMes">
-
             ${titulo.toUpperCase()} • ${mesAdmin.value.split("-")[0]}
-
         </div>
+    </div>
 
+    <div class="logoArea">
+        <img src="IEQLogo.png" class="logoExportacao" style="width: 35%; height: 35%;" alt="Logo">
     </div>
 
 </div>
 
 <div class="gradeEscala">
-
 <div class="linhaExportacao">
 
 `;
@@ -766,17 +764,13 @@ btnExportar.addEventListener("click", async () => {
     <div class="conteudoCulto">
 
         <div class="linhaPessoa">
-
-            👩 ${evangelista}
-
+            ${evangelista}
         </div>
 
         ${aux ? `
 
         <div class="linhaPessoa">
-
-            🤝 ${aux.value || "______"}
-
+            ${aux.value || "______"}
         </div>
 
         ` : ""}
