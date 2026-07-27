@@ -7,7 +7,8 @@ import {
     getDocs,
     doc,
     getDoc,
-    setDoc
+    setDoc,
+    documentId
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 const mesAdmin = document.getElementById("mesAdmin");
@@ -42,16 +43,52 @@ async function carregarParticipantes() {
 
     participantes = [];
 
+    // Disponibilidades do mês
     const q = query(
         collection(db, "disponibilidades"),
         where("mes", "==", mesAdmin.value)
     );
 
-    const snapshot = await getDocs(q);
+    const snapshotDisponibilidades = await getDocs(q);
 
-    snapshot.forEach(doc => {
+    // Todos os voluntários
+    const snapshotVoluntarios = await getDocs(
+        collection(db, "voluntarios")
+    );
 
-        participantes.push(doc.data());
+    // Cria um mapa por nome
+    const voluntarios = {};
+
+    snapshotVoluntarios.forEach(doc => {
+
+        const dados = doc.data();
+
+        voluntarios[dados.nome] = dados;
+
+    });
+
+    // Junta disponibilidade + cadastro
+    snapshotDisponibilidades.forEach(doc => {
+
+        const disponibilidade = doc.data();
+
+        const cadastro = voluntarios[disponibilidade.nome];
+
+        if (!cadastro) return;
+
+        participantes.push({
+
+            nome: disponibilidade.nome,
+
+            dias: disponibilidade.dias,
+
+            funcao: cadastro.funcao,
+
+            faixa: cadastro.faixa,
+
+            ativo: cadastro.ativo
+
+        });
 
     });
 
@@ -398,20 +435,29 @@ function gerarSugestao() {
     const contador = {};
 
     participantes.forEach(p => {
+
         contador[p.nome] = 0;
+
     });
 
     document.querySelectorAll(".domingo").forEach(card => {
 
         const titulo = card.querySelector("h3").innerText;
+
         const dia = titulo.match(/\d+/)[0];
 
-        // Pessoas disponíveis nesse dia
-        let disponiveis = participantes.filter(p => p.dias.includes(dia));
+        const ehQuinta = titulo.includes("Quinta");
 
-        // Ordena:
-        // 1º quem tem menos dias disponíveis no mês
-        // 2º quem foi menos escalado até agora
+        // Pessoas disponíveis nesse dia
+        let disponiveis = participantes.filter(p =>
+            p.dias.includes(dia) &&
+            p.ativo
+        );
+
+        // Ordena por:
+        // 1º menos dias disponíveis
+        // 2º menos escalas já montadas
+
         disponiveis.sort((a, b) => {
 
             if (a.dias.length !== b.dias.length)
@@ -421,40 +467,115 @@ function gerarSugestao() {
 
         });
 
-        const evangelista = card.querySelector(".evangelista");
-        const auxiliar = card.querySelector(".auxiliar");
+        const selectEvangelista = card.querySelector(".evangelista");
+        const selectAuxiliar = card.querySelector(".auxiliar");
 
-        // Evangelista
-        if (disponiveis.length > 0) {
+        // ==========================
+        // QUINTA
+        // ==========================
 
-            evangelista.value = disponiveis[0].nome;
+        if (ehQuinta) {
 
-            contador[disponiveis[0].nome]++;
+            const candidatos = disponiveis.filter(p =>
+
+                (p.funcao === "Evangelista" ||
+                 p.funcao === "Ambos")
+
+                &&
+
+                p.faixa === "Adulto"
+
+            );
+
+            if (candidatos.length > 0) {
+
+                selectEvangelista.value = candidatos[0].nome;
+
+                contador[candidatos[0].nome]++;
+
+            }
+
+            return;
 
         }
 
-        // Auxiliar (apenas domingos)
-        if (auxiliar) {
+        // ==========================
+        // DOMINGO
+        // ==========================
 
-            const restante = disponiveis.filter(p =>
-                p.nome !== evangelista.value
+        const evangelistas = disponiveis.filter(p =>
+
+            p.funcao === "Evangelista" ||
+            p.funcao === "Ambos"
+
+        );
+
+        if (evangelistas.length === 0)
+            return;
+
+        const escolhido = evangelistas[0];
+
+        selectEvangelista.value = escolhido.nome;
+
+        contador[escolhido.nome]++;
+
+        // ==========================
+        // AUXILIAR
+        // ==========================
+
+        let auxiliares;
+
+        // Evangelista é Junior?
+        if (escolhido.faixa === "Junior") {
+
+            auxiliares = disponiveis.filter(p =>
+
+                p.nome !== escolhido.nome &&
+
+                (p.funcao === "Auxiliar" ||
+                 p.funcao === "Ambos")
+
+                &&
+
+                p.faixa === "Adulto"
+
             );
 
-            if (restante.length > 0) {
+        }
 
-                restante.sort((a, b) =>
-                    contador[a.nome] - contador[b.nome]
-                );
+        else {
 
-                auxiliar.value = restante[0].nome;
+            auxiliares = disponiveis.filter(p =>
 
-                contador[restante[0].nome]++;
+                p.nome !== escolhido.nome &&
 
-            }
+                (p.funcao === "Auxiliar" ||
+                 p.funcao === "Ambos")
+
+            );
+
+        }
+
+        auxiliares.sort((a, b) => {
+
+            if (a.dias.length !== b.dias.length)
+                return a.dias.length - b.dias.length;
+
+            return contador[a.nome] - contador[b.nome];
+
+        });
+
+        if (auxiliares.length > 0) {
+
+            selectAuxiliar.value = auxiliares[0].nome;
+
+            contador[auxiliares[0].nome]++;
 
         }
 
     });
+
+    atualizarResumoEscalas();
 
     alert("✨ Sugestão gerada!\nRevise antes de salvar.");
 
