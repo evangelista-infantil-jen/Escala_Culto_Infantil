@@ -155,19 +155,96 @@ ${ehDomingo ? `
 
         const auxiliar = card.querySelector(".auxiliar");
 
-        disponiveis.forEach(pessoa => {
+        // ==========================
+// EVANGELISTA
+// ==========================
+
+const candidatosEvangelista = disponiveis.filter(p => {
+
+    // Quinta → somente Evangelista ou Ambos Adulto
+    if (!ehDomingo) {
+
+        return (
+            (p.funcao === "Evangelista" || p.funcao === "Ambos") &&
+            p.faixa === "Adulto"
+        );
+
+    }
+
+    // Domingo → Evangelista ou Ambos
+    return (
+        p.funcao === "Evangelista" ||
+        p.funcao === "Ambos"
+    );
+
+});
+
+candidatosEvangelista.forEach(pessoa => {
 
     evangelista.innerHTML +=
         `<option value="${pessoa.nome}">${pessoa.nome}</option>`;
 
-    if (auxiliar) {
+});
+
+// ==========================
+// AUXILIAR
+// ==========================
+
+if (auxiliar) {
+
+    const candidatosAuxiliar = disponiveis.filter(p =>
+
+        p.funcao === "Auxiliar" ||
+        p.funcao === "Ambos"
+
+    );
+
+    candidatosAuxiliar.forEach(pessoa => {
 
         auxiliar.innerHTML +=
             `<option value="${pessoa.nome}">${pessoa.nome}</option>`;
 
-    }
+    });
 
-});
+    // Se trocar a evangelista...
+    evangelista.addEventListener("change", () => {
+
+        auxiliar.innerHTML =
+            `<option value="">Selecionar...</option>`;
+
+        const evangelistaEscolhida = participantes.find(p =>
+            p.nome === evangelista.value
+        );
+
+        let lista = candidatosAuxiliar;
+
+        // Evangelista Junior → Auxiliar Adulto
+        if (
+            evangelistaEscolhida &&
+            evangelistaEscolhida.faixa === "Junior"
+        ) {
+
+            lista = candidatosAuxiliar.filter(p =>
+                p.faixa === "Adulto"
+            );
+
+        }
+
+        // Não deixar escolher a mesma pessoa
+        lista = lista.filter(p =>
+            p.nome !== evangelista.value
+        );
+
+        lista.forEach(pessoa => {
+
+            auxiliar.innerHTML +=
+                `<option value="${pessoa.nome}">${pessoa.nome}</option>`;
+
+        });
+
+    });
+
+}
 
         escalaDiv.appendChild(card);
 
