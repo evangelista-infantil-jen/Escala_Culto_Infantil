@@ -508,7 +508,12 @@ btnSalvar.addEventListener("click", async () => {
 
         console.error(erro);
 
-        alert("Erro ao salvar a escala.");
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Ocorreu um erro ao salvar a escala.\nTente Novamente mais tarde, ou contate a Tia Jen S2",
+            confirmButtonColor: "#dbaefc"
+        });
 
     }
 
@@ -671,7 +676,8 @@ function gerarSugestao() {
         toast: true,
         position: "top-end",
         icon: "success",
-        title: "Escala salva com sucesso!",
+        title: "Sugestão gerada com sucesso!",
+        text: "Revise a escala antes de salvar.",
         showConfirmButton: false,
         timer: 2500,
         timerProgressBar: true
@@ -693,63 +699,110 @@ btnExportar.addEventListener("click", async () => {
 
     let html = `
 
-    <div class="topo">
+<div class="cabecalhoEscala">
 
-        <div class="logo">🌈</div>
+    <div class="logoArea">
+        <img src="IEQLogo.png" class="logoExportacao">
+    </div>
 
-        <h1>Escala do Culto Infantil</h1>
+    <div class="tituloArea">
 
-        <h2>${titulo.toUpperCase()} • ${mesAdmin.value.split("-")[0]}</h2>
+        <h1>🌈 Escala do Culto Infantil</h1>
+
+        <div class="faixaMes">
+            ${titulo.toUpperCase()} • ${mesAdmin.value.split("-")[0]}
+        </div>
 
     </div>
 
-    `;
+</div>
 
-    document.querySelectorAll(".domingo").forEach(culto=>{
+<div class="gradeEscala">
 
-        const titulo = culto.querySelector("h3").innerText;
+`;
 
-        const evangelista = culto.querySelector(".evangelista").value || "__________";
+document.querySelectorAll(".domingo").forEach(culto=>{
 
-        const auxSelect = culto.querySelector(".auxiliar");
+    const tituloCulto = culto.querySelector("h3").innerText;
 
-        html += `
+    const evangelista =
+        culto.querySelector(".evangelista").value || "______";
 
-        <div class="cultoExportacao">
+    const aux =
+        culto.querySelector(".auxiliar");
 
-            <h3>${titulo}</h3>
-
-            <p>👩 <strong>Evangelista:</strong> ${evangelista}</p>
-
-        `;
-
-        if(auxSelect){
-
-            html += `
-
-            <p>🤝 <strong>Auxiliar:</strong> ${auxSelect.value || "__________"}</p>
-
-            `;
-
-        }
-
-        html += `
-
-        </div>
-
-        `;
-
-    });
+    const domingo =
+        aux != null;
 
     html += `
 
-    <div class="rodapeExportacao">
+    <div class="cardCulto ${domingo ? "domingoCard":"quintaCard"}">
 
-        💚 Ministério Infantil
+        <div class="tituloCulto">
+
+            ${tituloCulto}
+
+        </div>
+
+        <div class="conteudoCulto">
+
+            <div class="linhaPessoa">
+
+                👩 ${evangelista}
+
+            </div>
+
+    `;
+
+    if(aux){
+
+        html += `
+
+            <div class="linhaPessoa">
+
+                🤝 ${aux.value || "______"}
+
+            </div>
+
+        `;
+
+    }
+
+    html += `
+
+        </div>
 
     </div>
 
     `;
+
+});
+
+html += `
+
+</div>
+
+<div class="rodapeEscala">
+
+    <div class="versiculo">
+
+        "Deixem vir a mim as crianças."
+
+        <br>
+
+        <strong>Marcos 10:14</strong>
+
+    </div>
+
+    <div class="assinatura">
+
+        💜 Ministério Infantil
+
+    </div>
+
+</div>
+
+`;
 
     card.innerHTML = html;
 
