@@ -307,94 +307,175 @@ footer{
 #cardExportacao{
 
     width:1920px;
-    min-height:1080px;
+    height:1080px;
 
-    background:linear-gradient(180deg,#F8FBFF,#EEF9F1);
+    padding:60px;
 
-    padding:80px;
+    background:linear-gradient(135deg,#fff9fb,#fffef4);
 
     font-family:'Poppins',sans-serif;
 
     position:absolute;
-
     left:-99999px;
 
 }
 
-#cardExportacao .topo{
+.cabecalhoEscala{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:50px;
+
+    margin-bottom:45px;
+
+}
+
+.logoExportacao{
+
+    width:180px;
+
+}
+
+.tituloArea{
+
+    flex:1;
 
     text-align:center;
 
-    margin-bottom:60px;
-
 }
 
-#cardExportacao .logo{
+.tituloArea h1{
 
-    font-size:80px;
+    font-size:70px;
 
-}
-
-#cardExportacao h1{
-
-    color:#4CAF50;
-
-    font-size:60px;
-
-    margin-top:15px;
-
-}
-
-#cardExportacao h2{
-
-    color:#666;
-
-    font-size:36px;
-
-    margin-top:10px;
-
-}
-
-.cultoExportacao{
-
-    background:white;
-
-    border-radius:25px;
-
-    padding:35px;
-
-    margin-bottom:30px;
-
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
-
-}
-
-.cultoExportacao h3{
-
-    color:#4CAF50;
-
-    font-size:34px;
+    color:#7B4FD1;
 
     margin-bottom:20px;
 
 }
 
-.cultoExportacao p{
+.faixaMes{
 
-    font-size:30px;
+    display:inline-block;
 
-    margin:12px 0;
+    padding:12px 45px;
+
+    border-radius:40px;
+
+    background:linear-gradient(135deg,#ff8769,#fcfbc2);
+
+    color:#5f3aa5;
+
+    font-size:34px;
+
+    font-weight:700;
 
 }
 
-.rodapeExportacao{
+.gradeEscala{
 
-    margin-top:60px;
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:28px;
+
+}
+
+.cardCulto{
+
+    background:white;
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+    border:3px solid #ffe0ec;
+
+}
+
+.tituloCulto{
+
+    padding:16px;
 
     text-align:center;
 
     font-size:28px;
 
-    color:#777;
+    font-weight:700;
+
+    color:white;
+
+}
+
+.domingoCard .tituloCulto{
+
+    background:#ff7aa2;
+
+}
+
+.quintaCard .tituloCulto{
+
+    background:#49c9c3;
+
+}
+
+.conteudoCulto{
+
+    padding:28px;
+
+}
+
+.linhaPessoa{
+
+    font-size:32px;
+
+    margin:16px 0;
+
+    color:#444;
+
+}
+
+.rodapeEscala{
+
+    margin-top:45px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.versiculo{
+
+    width:55%;
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:25px;
+
+    font-size:28px;
+
+    color:#555;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.assinatura{
+
+    font-size:34px;
+
+    font-weight:700;
+
+    color:#7B4FD1;
 
 }
