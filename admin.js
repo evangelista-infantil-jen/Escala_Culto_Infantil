@@ -715,7 +715,7 @@ btnExportar.addEventListener("click", async () => {
 <div class="cabecalhoEscala">
 
     <div class="logoArea">
-        <img src="IEQLogo.png" class="logoExportacao" style="width: 50%; height: 50%;">
+        <img src="IEQLogo.png" class="logoExportacao" style="width: 75%; height: 75%;">
     </div>
 
     <div class="tituloArea">
@@ -726,7 +726,11 @@ btnExportar.addEventListener("click", async () => {
     </div>
 
     <div class="textoArea">
-        
+        Qualquer dúvida ou alteração, entre em contato!
+        <br>
+        <img src="Evan.png" class="logoExportacao" style="width: 20%; height: 20%;"> = Evangelista 
+        <br>
+        <img src="Auxi.png" class="logoExportacao" style="width: 20%; height: 20%;"> = Auxiliar
     </div>
 
 </div>
