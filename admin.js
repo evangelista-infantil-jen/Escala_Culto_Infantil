@@ -692,10 +692,25 @@ function gerarSugestao() {
 btnExportar.addEventListener("click", async () => {
 
     const card = document.createElement("div");
-
     card.id = "cardExportacao";
 
     const titulo = mesesTexto[parseInt(mesAdmin.value.split("-")[1]) - 1];
+
+    const cultos = Array.from(document.querySelectorAll(".domingo"));
+
+    const quantidade = cultos.length;
+
+    let primeiraLinha = 4;
+
+    if (quantidade == 9 || quantidade == 10)
+        primeiraLinha = 5;
+
+    const segundaLinha = quantidade - primeiraLinha;
+
+    const classeCard =
+        primeiraLinha == 5
+            ? "cardPequeno"
+            : "cardGrande";
 
     let html = `
 
@@ -710,7 +725,9 @@ btnExportar.addEventListener("click", async () => {
         <h1>🌈 Escala do Culto Infantil</h1>
 
         <div class="faixaMes">
+
             ${titulo.toUpperCase()} • ${mesAdmin.value.split("-")[0]}
+
         </div>
 
     </div>
@@ -719,66 +736,119 @@ btnExportar.addEventListener("click", async () => {
 
 <div class="gradeEscala">
 
+<div class="linhaExportacao">
+
 `;
 
-document.querySelectorAll(".domingo").forEach(culto=>{
+    cultos.slice(0, primeiraLinha).forEach(culto => {
 
-    const tituloCulto = culto.querySelector("h3").innerText;
+        const tituloCulto = culto.querySelector("h3").innerText;
 
-    const evangelista =
-        culto.querySelector(".evangelista").value || "______";
+        const evangelista =
+            culto.querySelector(".evangelista").value || "______";
 
-    const aux =
-        culto.querySelector(".auxiliar");
+        const aux =
+            culto.querySelector(".auxiliar");
 
-    const domingo =
-        aux != null;
-
-    html += `
-
-    <div class="cardCulto ${domingo ? "domingoCard":"quintaCard"}">
-
-        <div class="tituloCulto">
-
-            ${tituloCulto}
-
-        </div>
-
-        <div class="conteudoCulto">
-
-            <div class="linhaPessoa">
-
-                👩 ${evangelista}
-
-            </div>
-
-    `;
-
-    if(aux){
+        const domingo =
+            aux != null;
 
         html += `
 
-            <div class="linhaPessoa">
+<div class="cardCulto ${classeCard} ${domingo ? "domingoCard" : "quintaCard"}">
 
-                🤝 ${aux.value || "______"}
+    <div class="tituloCulto">
 
-            </div>
-
-        `;
-
-    }
-
-    html += `
-
-        </div>
+        ${tituloCulto}
 
     </div>
 
-    `;
+    <div class="conteudoCulto">
 
-});
+        <div class="linhaPessoa">
 
-html += `
+            👩 ${evangelista}
+
+        </div>
+
+        ${aux ? `
+
+        <div class="linhaPessoa">
+
+            🤝 ${aux.value || "______"}
+
+        </div>
+
+        ` : ""}
+
+    </div>
+
+</div>
+
+`;
+
+    });
+
+    html += `
+
+</div>
+
+<div class="linhaExportacao">
+
+`;
+
+    cultos.slice(primeiraLinha).forEach(culto => {
+
+        const tituloCulto = culto.querySelector("h3").innerText;
+
+        const evangelista =
+            culto.querySelector(".evangelista").value || "______";
+
+        const aux =
+            culto.querySelector(".auxiliar");
+
+        const domingo =
+            aux != null;
+
+        html += `
+
+<div class="cardCulto ${classeCard} ${domingo ? "domingoCard" : "quintaCard"}">
+
+    <div class="tituloCulto">
+
+        ${tituloCulto}
+
+    </div>
+
+    <div class="conteudoCulto">
+
+        <div class="linhaPessoa">
+
+            👩 ${evangelista}
+
+        </div>
+
+        ${aux ? `
+
+        <div class="linhaPessoa">
+
+            🤝 ${aux.value || "______"}
+
+        </div>
+
+        ` : ""}
+
+    </div>
+
+</div>
+
+`;
+
+    });
+
+    html += `
+
+</div>
 
 </div>
 
@@ -808,11 +878,10 @@ html += `
 
     document.body.appendChild(card);
 
-    const canvas = await html2canvas(card,{
+    const canvas = await html2canvas(card, {
 
-        scale:2,
-
-        backgroundColor:null
+        scale: 2,
+        backgroundColor: null
 
     });
 
