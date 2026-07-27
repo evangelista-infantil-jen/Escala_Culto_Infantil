@@ -690,10 +690,8 @@ function gerarSugestao() {
 // ========================================
 
 btnExportar.addEventListener("click", async () => {
-
     const card = document.createElement("div");
     card.id = "cardExportacao";
-
     const titulo = mesesTexto[parseInt(mesAdmin.value.split("-")[1]) - 1];
 
     const cultos = Array.from(document.querySelectorAll(".domingo"));
@@ -717,7 +715,7 @@ btnExportar.addEventListener("click", async () => {
 <div class="cabecalhoEscala">
 
     <div class="logoArea">
-        <img src="IEQLogo.png" class="logoExportacao" style="width: 35%; height: 35%;" alt="Logo">
+        <img src="IEQLogo.png" class="logoExportacao" style="width: 35%; height: 35%;">
     </div>
 
     <div class="tituloArea">
@@ -727,8 +725,8 @@ btnExportar.addEventListener("click", async () => {
         </div>
     </div>
 
-    <div class="logoArea">
-        <img src="IEQLogo.png" class="logoExportacao" style="width: 35%; height: 35%;" alt="Logo">
+    <div class="textoArea">
+        
     </div>
 
 </div>
@@ -809,29 +807,18 @@ btnExportar.addEventListener("click", async () => {
 <div class="cardCulto ${classeCard} ${domingo ? "domingoCard" : "quintaCard"}">
 
     <div class="tituloCulto">
-
         ${tituloCulto}
-
     </div>
 
     <div class="conteudoCulto">
-
         <div class="linhaPessoa">
-
-            👩 ${evangelista}
-
+             ${evangelista}
         </div>
-
         ${aux ? `
-
         <div class="linhaPessoa">
-
-            🤝 ${aux.value || "______"}
-
+             ${aux.value || "______"}
         </div>
-
         ` : ""}
-
     </div>
 
 </div>
@@ -849,19 +836,13 @@ btnExportar.addEventListener("click", async () => {
 <div class="rodapeEscala">
 
     <div class="versiculo">
-
-        "Deixem vir a mim as crianças."
-
+        "Deixem vir a mim as crianças e não as impeçam, pois o reino de Deus pertence aos que são semelhantes a elas"
         <br>
-
         <strong>Marcos 10:14</strong>
-
     </div>
 
     <div class="assinatura">
-
         💜 Ministério Infantil
-
     </div>
 
 </div>
