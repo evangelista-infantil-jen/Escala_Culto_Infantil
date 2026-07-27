@@ -350,6 +350,16 @@ footer{
 
 }
 
+.textoArea {
+    width:20%;
+    background:white;
+    padding:30px;
+    border-radius:25px;
+    font-size:28px;
+    color:#555;
+    box-shadow:0 8px 20px rgba(250,241,202);
+}
+
 .faixaMes{
 
     display:inline-block;
