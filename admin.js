@@ -715,7 +715,7 @@ btnExportar.addEventListener("click", async () => {
 <div class="cabecalhoEscala">
 
     <div class="logoArea">
-        <img src="IEQLogo.png" class="logoExportacao" style="width: 35%; height: 35%;">
+        <img src="IEQLogo.png" class="logoExportacao" style="width: 50%; height: 50%;">
     </div>
 
     <div class="tituloArea">
