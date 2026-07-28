@@ -841,8 +841,7 @@ btnExportar.addEventListener("click", async () => {
 
     <div class="versiculo">
         "Deixem vir a mim as crianças e não as impeçam, pois o reino de Deus pertence aos que são semelhantes a elas"
-        <br>
-        <strong>Marcos 10:14</strong>
+        <strong>~ Marcos 10:14</strong>
     </div>
 
     <div class="assinatura">
