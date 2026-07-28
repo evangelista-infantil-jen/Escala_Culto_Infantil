@@ -728,9 +728,9 @@ btnExportar.addEventListener("click", async () => {
     <div class="textoArea">
         Qualquer dúvida ou alteração, entre em contato!
         <br>
-        <img src="Evan.png" class="logoExportacao" style="width: 20%; height: 20%;"> = Evangelista 
+        <img src="Evan.png" class="logoExportacao" style="width: 16%; height: 16%;"> = Evangelista 
         <br>
-        <img src="Auxi.png" class="logoExportacao" style="width: 20%; height: 20%;"> = Auxiliar
+        <img src="Auxi.png" class="logoExportacao" style="width: 16%; height: 16%;"> = Auxiliar
     </div>
 
 </div>
