@@ -766,13 +766,13 @@ btnExportar.addEventListener("click", async () => {
     <div class="conteudoCulto">
 
         <div class="linhaPessoa">
-            <img src="Evan.png" class="logoExportacao" style="width: 20%; height: 20%;"> ${evangelista}
+            <img src="Evan.png" class="logoExportacao" style="width: 16%; height: 16%;"> ${evangelista}
         </div>
 
         ${aux ? `
 
         <div class="linhaPessoa">
-            <img src="Auxi.png" class="logoExportacao" style="width: 20%; height: 20%;"> ${aux.value || "______"}
+            <img src="Auxi.png" class="logoExportacao" style="width: 16%; height: 16%;"> ${aux.value || "______"}
         </div>
 
         ` : ""}
@@ -816,11 +816,11 @@ btnExportar.addEventListener("click", async () => {
 
     <div class="conteudoCulto">
         <div class="linhaPessoa">
-             <img src="Evan.png" class="logoExportacao" style="width: 20%; height: 20%;"> ${evangelista}
+             <img src="Evan.png" class="logoExportacao" style="width: 16%; height: 16%;"> ${evangelista}
         </div>
         ${aux ? `
         <div class="linhaPessoa">
-             <img src="Auxi.png" class="logoExportacao" style="width: 20%; height: 20%;"> ${aux.value || "______"}
+             <img src="Auxi.png" class="logoExportacao" style="width: 16%; height: 16%;"> ${aux.value || "______"}
         </div>
         ` : ""}
     </div>
