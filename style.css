@@ -5,6 +5,7 @@
 }
 
 body{
+    background-image: url("FUNDO.png");
     font-family:'Poppins',sans-serif;
     background:linear-gradient(180deg,#f8fbff,#eef8f3);
 }
