@@ -5,7 +5,6 @@
 }
 
 body{
-    background-image: url("FUNDO.png");
     font-family:'Poppins',sans-serif;
     background:linear-gradient(180deg,#f8fbff,#eef8f3);
 }
@@ -311,7 +310,7 @@ footer{
     height:1080px;
 
     padding:60px;
-
+    background-image: url("FUNDO.png");
     background:linear-gradient(135deg,#fff9fb,#fffef4);
 
     font-family:'Poppins',sans-serif;
