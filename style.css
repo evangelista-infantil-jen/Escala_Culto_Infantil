@@ -396,54 +396,34 @@ footer{
 }
 
 .linhaExportacao{
-
     display:flex;
-
     justify-content:center;
-
     gap:22px;
-
 }
 
 .cardCulto{
-
     background:white;
-
     border-radius:25px;
-
     overflow:hidden;
-
     border:3px solid #FFE0EC;
-
     box-shadow:0 8px 18px rgba(0,0,0,.08);
-
     transition:.3s;
 
 }
 .cardGrande{
-
-    width:410px;
-
+    width:390px;
 }
 
 .cardPequeno{
-
     width:305px;
-
 }
 
 .tituloCulto{
-
     padding:14px;
-
     text-align:center;
-
     font-size:26px;
-
     font-weight:700;
-
     color:white;
-
 }
 
 .domingoCard .tituloCulto{
