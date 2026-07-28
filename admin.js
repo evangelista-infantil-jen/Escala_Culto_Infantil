@@ -528,14 +528,59 @@ btnSugestao.addEventListener("click", gerarSugestao);
 function gerarSugestao() {
 
     const contador = {};
+    const evangelizouDomingo = {};
+    const ultimoCulto = {};
 
     participantes.forEach(p => {
 
         contador[p.nome] = 0;
+        evangelizouDomingo[p.nome] = false;
+        ultimoCulto[p.nome] = -99;
 
     });
 
-    document.querySelectorAll(".domingo").forEach(card => {
+    const cultos = [...document.querySelectorAll(".domingo")];
+
+    // ===================================
+    // PRIORIZA CULTOS COM MENOS OPÇÕES
+    // ===================================
+
+    cultos.sort((a, b) => {
+
+        const diaA = a.querySelector("h3").innerText.match(/\d+/)[0];
+        const diaB = b.querySelector("h3").innerText.match(/\d+/)[0];
+
+        const quintaA = a.querySelector("h3").innerText.includes("Quinta");
+        const quintaB = b.querySelector("h3").innerText.includes("Quinta");
+
+        const dispA = participantes.filter(p =>
+            p.ativo &&
+            p.dias.includes(diaA)
+        );
+
+        const dispB = participantes.filter(p =>
+            p.ativo &&
+            p.dias.includes(diaB)
+        );
+
+        const evA = dispA.filter(p =>
+            (p.funcao == "Evangelista" || p.funcao == "Ambos") &&
+            (quintaA ? p.faixa == "Adulto" : true)
+        );
+
+        const evB = dispB.filter(p =>
+            (p.funcao == "Evangelista" || p.funcao == "Ambos") &&
+            (quintaB ? p.faixa == "Adulto" : true)
+        );
+
+        if (evA.length != evB.length)
+            return evA.length - evB.length;
+
+        return dispA.length - dispB.length;
+
+    });
+
+    cultos.forEach((card, indiceCulto) => {
 
         const titulo = card.querySelector("h3").innerText;
 
@@ -543,50 +588,75 @@ function gerarSugestao() {
 
         const ehQuinta = titulo.includes("Quinta");
 
-        // Pessoas disponíveis nesse dia
         let disponiveis = participantes.filter(p =>
-            p.dias.includes(dia) &&
-            p.ativo
+            p.ativo &&
+            p.dias.includes(dia)
         );
 
-        // Ordena por:
-        // 1º menos dias disponíveis
-        // 2º menos escalas já montadas
+        function descanso(lista){
 
-        disponiveis.sort((a, b) => {
+            let livres = lista.filter(p =>
+                indiceCulto - ultimoCulto[p.nome] > 2
+            );
 
-            if (a.dias.length !== b.dias.length)
-                return a.dias.length - b.dias.length;
+            if(livres.length == 0)
+                livres = lista;
 
-            return contador[a.nome] - contador[b.nome];
+            return livres;
 
-        });
+        }
+
+        function ordenar(lista){
+
+            return lista.sort((a,b)=>{
+
+                // Nunca evangelizou no domingo
+                if(evangelizouDomingo[a.nome] != evangelizouDomingo[b.nome])
+                    return evangelizouDomingo[a.nome] - evangelizouDomingo[b.nome];
+
+                // Menos dias disponíveis
+                if(a.dias.length != b.dias.length)
+                    return a.dias.length - b.dias.length;
+
+                // Menos escalas
+                if(contador[a.nome] != contador[b.nome])
+                    return contador[a.nome] - contador[b.nome];
+
+                return a.nome.localeCompare(b.nome);
+
+            });
+
+        }
 
         const selectEvangelista = card.querySelector(".evangelista");
         const selectAuxiliar = card.querySelector(".auxiliar");
 
-        // ==========================
+        // ===================================
         // QUINTA
-        // ==========================
+        // ===================================
 
-        if (ehQuinta) {
+        if(ehQuinta){
 
-            const candidatos = disponiveis.filter(p =>
+            let candidatos = disponiveis.filter(p=>
 
-                (p.funcao === "Evangelista" ||
-                 p.funcao === "Ambos")
+                (p.funcao=="Evangelista" ||
+                 p.funcao=="Ambos")
 
                 &&
 
-                p.faixa === "Adulto"
+                p.faixa=="Adulto"
 
             );
 
-            if (candidatos.length > 0) {
+            candidatos = ordenar(descanso(candidatos));
+
+            if(candidatos.length){
 
                 selectEvangelista.value = candidatos[0].nome;
 
                 contador[candidatos[0].nome]++;
+
+                ultimoCulto[candidatos[0].nome] = indiceCulto;
 
             }
 
@@ -594,18 +664,35 @@ function gerarSugestao() {
 
         }
 
-        // ==========================
-        // DOMINGO
-        // ==========================
+        // ===================================
+        // DOMINGO - EVANGELISTA
+        // ===================================
 
-        const evangelistas = disponiveis.filter(p =>
+        let evangelistas = disponiveis.filter(p=>
 
-            p.funcao === "Evangelista" ||
-            p.funcao === "Ambos"
+            (p.funcao=="Evangelista" ||
+             p.funcao=="Ambos")
+
+            &&
+
+            !evangelizouDomingo[p.nome]
 
         );
 
-        if (evangelistas.length === 0)
+        if(evangelistas.length==0){
+
+            evangelistas = disponiveis.filter(p=>
+
+                p.funcao=="Evangelista" ||
+                p.funcao=="Ambos"
+
+            );
+
+        }
+
+        evangelistas = ordenar(descanso(evangelistas));
+
+        if(!evangelistas.length)
             return;
 
         const escolhido = evangelistas[0];
@@ -614,57 +701,66 @@ function gerarSugestao() {
 
         contador[escolhido.nome]++;
 
-        // ==========================
-        // AUXILIAR
-        // ==========================
+        ultimoCulto[escolhido.nome] = indiceCulto;
+
+        evangelizouDomingo[escolhido.nome] = true;
+
+        // ===================================
+        // DOMINGO - AUXILIAR
+        // ===================================
 
         let auxiliares;
 
-        // Evangelista é Junior?
-        if (escolhido.faixa === "Junior") {
+        if(escolhido.faixa=="Junior"){
 
-            auxiliares = disponiveis.filter(p =>
+            auxiliares = disponiveis.filter(p=>
 
-                p.nome !== escolhido.nome &&
+                p.nome != escolhido.nome &&
 
-                (p.funcao === "Auxiliar" ||
-                 p.funcao === "Ambos")
+                (p.funcao=="Auxiliar" ||
+                 p.funcao=="Ambos")
 
                 &&
 
-                p.faixa === "Adulto"
+                p.faixa=="Adulto"
 
             );
 
         }
 
-        else {
+        else{
 
-            auxiliares = disponiveis.filter(p =>
+            auxiliares = disponiveis.filter(p=>
 
-                p.nome !== escolhido.nome &&
+                p.nome != escolhido.nome &&
 
-                (p.funcao === "Auxiliar" ||
-                 p.funcao === "Ambos")
+                (p.funcao=="Auxiliar" ||
+                 p.funcao=="Ambos")
 
             );
 
         }
 
-        auxiliares.sort((a, b) => {
+        // Quem já evangelizou domingo vira prioridade como auxiliar
+        let prioridade = auxiliares.filter(p =>
+            evangelizouDomingo[p.nome]
+        );
 
-            if (a.dias.length !== b.dias.length)
-                return a.dias.length - b.dias.length;
+        if(prioridade.length){
 
-            return contador[a.nome] - contador[b.nome];
+            auxiliares = prioridade;
 
-        });
+        }
 
-        if (auxiliares.length > 0) {
+        auxiliares = ordenar(descanso(auxiliares));
+
+        if(auxiliares.length){
 
             selectAuxiliar.value = auxiliares[0].nome;
 
             contador[auxiliares[0].nome]++;
+
+            ultimoCulto[auxiliares[0].nome] = indiceCulto;
 
         }
 
@@ -673,18 +769,17 @@ function gerarSugestao() {
     atualizarResumoEscalas();
 
     Swal.fire({
-        toast: true,
-        position: "top-end",
-        icon: "success",
-        title: "Sugestão gerada com sucesso!",
-        text: "Revise a escala antes de salvar.",
-        showConfirmButton: false,
-        timer: 2500,
-        timerProgressBar: true
+        toast:true,
+        position:"top-end",
+        icon:"success",
+        title:"Sugestão gerada!",
+        text:"Revise a escala antes de salvar.",
+        showConfirmButton:false,
+        timer:2500,
+        timerProgressBar:true
     });
 
 }
-
 // ========================================
 // EXPORTAR COMO IMAGEM
 // ========================================
