@@ -357,7 +357,7 @@ footer{
 
 .textoArea {
     width:20%;
-    background:white;
+    background: rgba(255,255,255,.80);
     padding:30px;
     border-radius:25px;
     font-size:25px;
@@ -479,22 +479,14 @@ footer{
 }
 
 .versiculo{
-
     width:55%;
-
-    background:white;
-
+    background: rgba(255,255,255,.80);
     padding:30px;
-
     border-radius:25px;
-
-    font-size:28px;
-
+    font-size:25px;
     color:#555;
-
     box-shadow:0 8px 20px rgba(0,0,0,.08);
     bottom: 0;
-
 }
 
 .assinatura{
