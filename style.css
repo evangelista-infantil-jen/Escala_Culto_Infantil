@@ -310,7 +310,10 @@ footer{
     height:1080px;
 
     padding:60px;
-    background-image: url("FUNDO.png");
+    background-image:url("FundoEscala.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
     background:linear-gradient(135deg,#fff9fb,#fffef4);
 
     font-family:'Poppins',sans-serif;
