@@ -463,25 +463,17 @@ footer{
 }
 
 .linhaPessoa{
-
+    align-items: center;
     font-size:26px;
-
     margin:12px 0;
-
     color:#444;
-
 }
 
 .rodapeEscala{
-
     margin-top:45px;
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
 }
 
 .versiculo{
@@ -499,6 +491,7 @@ footer{
     color:#555;
 
     box-shadow:0 8px 20px rgba(0,0,0,.08);
+    bottom: 0;
 
 }
 
